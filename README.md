@@ -57,3 +57,14 @@ Finally, `exp` contains all the sampled LLM responses for the experiments in the
 2. If you wish to run the entire experiment---including LLM generation---you should go to the corresponding experiment folder, and do `run.py`.
 
 3. (To save some time) you can use the plotting bit in `run.py` and directly generate the plots in the paper from the calculated scores.
+
+# Cite
+
+```
+@article{rauba2024quantifying,
+  title={Quantifying perturbation impacts for large language models},
+  author={Rauba, Paulius and Wei, Qiyao and van der Schaar, Mihaela},
+  journal={arXiv preprint arXiv:2412.00868},
+  year={2024}
+}
+```
