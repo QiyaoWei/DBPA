@@ -51,5 +51,3 @@ Finally, `exp` contains all the sampled LLM responses for the experiments in the
 2. If you wish to run the entire experiment---including LLM generation---you should go to the corresponding experiment folder, and do `run.py`.
 
 3. (To save some time) you can use the plotting bit in `run.py` and directly generate the plots in the paper from the calculated scores.
-
-![image](https://github.com/user-attachments/assets/6eba67ba-763f-48c1-8349-6ec3cf29557f)
