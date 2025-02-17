@@ -6,6 +6,12 @@ This is the official implementation of DBPA ([Quantifying perturbation impacts f
 
 This repository includes the necessary code, prompts, and collected responses to reproduce the experiments and results presented in the NeurIPS workshop SFLLM paper.
 
+# Installation
+
+`pip install -e .`
+
+Also check `requirements.txt`.
+
 # Prerequisites
 
 To use this repository, you will need an API to access the LLM. The simplest way to set this up is to create a Python file named `src/utils/openai_config.py` with the following structure:
