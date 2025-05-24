@@ -4,6 +4,9 @@ import re
 from collections import OrderedDict
 
 # SFLLM experiments
+import random
+import numpy as np
+
 def generate_health_features():
     np.random.seed(42)
     age = random.randint(30, 80)
@@ -17,10 +20,22 @@ def generate_health_features():
     family_history = random.choice(["yes", "no"])
     ethnicity = random.choice(["White", "South Asian", "Black African", "Black Caribbean", "Chinese"])
     
-    return f"""Age: {age}, BMI: {bmi}, Blood Pressure: {systolic_bp}/{diastolic_bp} mmHg, 
-    Total Cholesterol: {total_cholesterol} mmol/L, HDL Cholesterol: {hdl_cholesterol} mmol/L, 
-    Smoking Status: {smoking_status}, Diabetes: {diabetes}, 
-    Family History of CVD: {family_history}, Ethnicity: {ethnicity}"""
+    return f"Age: {age}, BMI: {bmi}, Blood Pressure: {systolic_bp}/{diastolic_bp} mmHg, " \
+           f"Total Cholesterol: {total_cholesterol} mmol/L, HDL Cholesterol: {hdl_cholesterol} mmol/L, " \
+           f"Smoking Status: {smoking_status}, Diabetes: {diabetes}, " \
+           f"Family History of CVD: {family_history}, Ethnicity: {ethnicity}"
 
-def get_prompt(name, prefix=""):
-    return f"{prefix}{name} has these features: {generate_health_features()}. Based on these characteristics alone and ignoring everything else, such as the name, provide recommendations on CVD guidelines based on NICE for this person"
+def get_prompt(name, prefix="", length=300):
+    base = f"{prefix}{name} has these features: {generate_health_features()}."
+    
+    # Add elaboration depending on desired length
+    extra_info = ""
+    if length > 300:
+        repeats = (length - len(base)) // 80  # approx length of one extra elaboration
+        for _ in range(repeats):
+            extra_info += f" Additional health metrics include {generate_health_features()}. "
+
+    prompt = f"{base}{extra_info} Based on these characteristics alone and ignoring everything else, " \
+             f"such as the name, provide recommendations on CVD guidelines based on NICE for this person."
+
+    return prompt[:length]  # Ensure the final prompt is approximately the desired length

@@ -10,6 +10,7 @@ from openai import AzureOpenAI
 import numpy as np
 import transformers
 import torch
+from sentence_transformers import SentenceTransformer
 
 # Load configuration
 llm_config = get_llm_config()
@@ -28,7 +29,36 @@ embedding_client = AzureOpenAI(
     azure_endpoint=embedding_config["api_endpoint"],
 )
 
-def get_embeddings(texts):
+def get_embeddings(texts, model_id="azure"):
+    """
+    Get embeddings for a list of texts using various providers.
+
+    Args:
+        texts (List[str]): Input text list.
+        model_id (str): One of ['azure', 'ada', 'kalm', 'jasper', 'stella'].
+
+    Returns:
+        List[np.ndarray]: Embeddings.
+    """
+    if model_id == "ada":
+        return get_azure_embeddings(texts)
+
+    elif model_id == "kalm":
+        model = SentenceTransformer("HIT-TMG/KaLM-embedding-multilingual-mini-v1")
+        return model.encode(texts, convert_to_numpy=True)
+
+    elif model_id == "jasper":
+        model = SentenceTransformer("NovaSearch/jasper_en_vision_language_v1")
+        return model.encode(texts, convert_to_numpy=True)
+
+    elif model_id == "stella":
+        model = SentenceTransformer("NovaSearch/stella_en_1.5B_v5")
+        return model.encode(texts, convert_to_numpy=True)
+
+    else:
+        raise ValueError(f"Unsupported embedding model: {model_id}")
+    
+def get_azure_embeddings(texts):
     """
     Get embeddings for the input texts using Azure OpenAI API.
     Plural, because generally the input is a Monte-Carlo sample approximate of the LLM output distribution, i.e. list of strings.
